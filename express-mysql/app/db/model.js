@@ -1,5 +1,6 @@
-const dbConn = require("../config/db.config");
+const dbConn = require("../config/db.config"); // Se hace el llamado a la BD del db.config
 
+//Se realizan lo que son los queries de la tabla developers
 const model = {
   getAllDevelopers(req, res) {
     const queryString = "SELECT * FROM developers";

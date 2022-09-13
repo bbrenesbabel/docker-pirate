@@ -4,10 +4,14 @@ const server = require("../app");
 const sinon = require("sinon");
 const model = require("../db/model");
 
+//Hace el llamado a todos las devDependencies de la carpeta package.json
+
+
 // Assertion style and config
-chai.should();
+chai.should(); //Metodología que se va a utilizar con el chai.
 chai.use(chaiHttp);
 
+//Aquí es donde describe lo que va a hacer este test.
 describe("Test routes for REST-API", () => {
   const fakeDeveloper1 = {
     id: 1,
@@ -19,6 +23,8 @@ describe("Test routes for REST-API", () => {
     age: 99,
   };
 
+  //Serie de elementos o fakes que van a hacer utilizados por el app pero sin estar
+  //en la base de datos.
   const incompleteFakeDeveloper1 = {
     id: 1,
     id_type: "cc",
@@ -69,6 +75,7 @@ describe("Test routes for REST-API", () => {
     changedRows: 1,
   };
 
+  //Test
 
   /**
    * Test the GET route "/"
@@ -84,6 +91,8 @@ describe("Test routes for REST-API", () => {
           done();
         });
     });
+
+    //Test que muestre lo del error 304
 
     it("It should GET a 404 error", (done) => {
       chai

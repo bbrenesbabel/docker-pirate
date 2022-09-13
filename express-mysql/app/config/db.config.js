@@ -1,5 +1,5 @@
 "use strict";
-const mysql = require("mysql");
+const mysql = require("mysql"); //Establece la conexión a la base de datos.
 
 // Connect to MySQL based on environment variables or default
 const dbConn = mysql.createConnection({
