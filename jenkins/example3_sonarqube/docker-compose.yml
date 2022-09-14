@@ -32,7 +32,7 @@ services:
     environment:
       SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
     ports:
-      - "9000:9000"
+      - "9005:9000"
     networks:
       - net_devops_pirate
     volumes:
@@ -53,6 +53,6 @@ volumes:
     name: "custom_jenkins_home"
 
 networks:
-  net_devops:
+  net_devops_pirate:
     driver: bridge
     name: net_devops_pirate
