@@ -1,58 +1,157 @@
-version: "3.8"
+# version: "3.8"
 
-services:
-  myjenkins:
-    container_name: my_custom_jenkins
-    image: jenkins/jenkins:lts
-    user: root
-    environment:
-      MY_NAME: "santi_devops"
-      # Gmail extra configuration for mailer plugin
-      JAVA_OPTS: "-Djava.awt.headless=true -Dmail.smtp.starttls.enable=true"
-      SONARQUBE_HOST: mysonarqube
-    ports:
-      - "8085:8080"
-      - "50005:50000"
-    volumes:
-      # Named  Docker volume details at the bottom
-      - jenkins_home:/var/jenkins_home
-      # WARNING:
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - net_devops_pirate
-    deploy:
-      resources:
-        limits:
-          cpus: "2"
-          memory: 2G
-  mysonarqube:
-    container_name: my_custom_sonarqube
-    # build: ./sonarqube_home
-    image: sonarqube:7.9.5-community
-    environment:
-      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
-    ports:
-      - "9005:9000"
-    networks:
-      - net_devops_pirate
-    volumes:
-      - ./sonarqube_home/conf/:/opt/sonarqube/conf
-      - ./sonarqube_home/data/:/opt/sonarqube/data
-      - ./sonarqube_home/logs/:/opt/sonarqube/logs
-      - ./sonarqube_home/extensions/:/opt/sonarqube/extensions
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "2"
-          memory: 3G
+# services:
+#   myjenkins:
+#     container_name: my_custom_jenkins
+#     image: jenkins/jenkins:lts
+#     user: root
+#     environment:
+#       MY_NAME: "santi_devops"
+#       # Gmail extra configuration for mailer plugin
+#       JAVA_OPTS: "-Djava.awt.headless=true -Dmail.smtp.starttls.enable=true"
+#       SONARQUBE_HOST: mysonarqube
+#     ports:
+#       - "8085:8080"
+#       - "50005:50000"
+#     volumes:
+#       # Named  Docker volume details at the bottom
+#       - jenkins_home:/var/jenkins_home
+#       # WARNING:
+#       - /var/run/docker.sock:/var/run/docker.sock
+#     networks:
+#       - net_devops_pirate
+#     deploy:
+#       resources:
+#         limits:
+#           cpus: "2"
+#           memory: 2G
+#   mysonarqube:
+#     container_name: my_custom_sonarqube
+#     # build: ./sonarqube_home
+#     image: sonarqube:7.9.5-community
+#     environment:
+#       SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+#     ports:
+#       - "9005:9000"
+#     networks:
+#       - net_devops_pirate
+#     volumes:
+#       #- ./sonarqube_home/conf/:/opt/sonarqube/conf
+#       #- ./sonarqube_home/data/:/opt/sonarqube/data
+#       #- ./sonarqube_home/logs/:/opt/sonarqube/logs
+#       #- ./sonarqube_home/extensions/:/opt/sonarqube/extensions
 
-# To use docker-volume (custom_jenkins_home) instead of a directory path-file
-volumes:
-  jenkins_home:
-    name: "custom_jenkins_home"
+#       - sonarqube_conf:/opt/sonarqube/conf
+#       - sonarqube_data:/opt/sonarqube/data
+#       - sonarqube_extensions:/opt/sonarqube/extensions
+#       - sonarqube_logs:/opt/sonarqube/logs
 
-networks:
-  net_devops_pirate:
-    driver: bridge
-    name: net_devops_pirate
+#     restart: unless-stopped
+#     deploy:
+#       resources:
+#         limits:
+#           cpus: "2"
+#           memory: 3G
+
+# # To use docker-volume (custom_jenkins_home) instead of a directory path-file
+# volumes:
+#   jenkins_home:
+#     name: "custom_jenkins_home"
+
+#   sonarqube_conf:
+#     name: "custom_sonarqube_conf"
+
+#   sonarqube_data:
+#    name: "custom_sonarqube_data"
+
+#   sonarqube_extensions:
+#     name: "custom_sonarqube_extensions"
+
+#   sonarqube_logs:
+#     name: "custom_sonarqube_logs"
+
+# networks:
+#   net_devops_pirate:
+#     driver: bridge
+#     name: net_devops_pirate
+
+  version: "3.8"
+  services:
+    myjenkins:
+      container_name: my_custom_jenkins
+      image: jenkins/jenkins:lts
+      user: root
+      environment:
+        MY_NAME: "test_devops"
+        # Gmail extra configuration for mailer plugin
+        JAVA_OPTS: "-Djava.awt.headless=true -Dmail.smtp.starttls.enable=true"
+        SONARQUBE_HOST: mysonarqube #Nombre del servicio de sonarquebe
+      ports: #puerto local:puerto del container
+        - "8080:8080"
+        - "50000:50000"
+      volumes:
+        # volumen de jenkins
+        - jenkins_home:/var/jenkins_home
+        # WARNING: volumen que conecta el soquet de docker local con el soquet del container, para correr DinD 
+        - /var/run/docker.sock:/var/run/docker.sock
+      restart: always
+      networks:
+        - net_devops
+      deploy:
+        resources:
+          limits:
+            cpus: "2"
+            memory: 2G
+    mysonarqube:
+      container_name: my_custom_sonarqube
+      # build: ./sonarqube_home
+      image: sonarqube:7.9.5-community
+      #image: mc1arke/sonarqube-with-community-branch-plugin:8.9-community
+      #image: sonarqube:8.9.9-community
+      #user: root #descomentar para instalar el ping
+      environment:
+        SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+        #SONARQUBE_USERNAME: admin
+        #SONARQUBE_PASSWORD: prueba8080
+      ports:
+        - "9000:9000"
+      networks:
+        - net_devops
+      volumes:
+        #- ./sonarqube_home/conf/:/opt/sonarqube/conf
+        #- ./sonarqube_home/data/:/opt/sonarqube/data
+        # - ./sonarqube_home/logs/:/opt/sonarqube/logs
+        # - ./sonarqube_home/extensions/:/opt/sonarqube/extensions
+        - sonarqube_conf:/opt/sonarqube/conf
+        - sonarqube_data:/opt/sonarqube/data
+        - sonarqube_extensions:/opt/sonarqube/extensions 
+        - sonarqube_logs:/opt/sonarqube/logs
+      # - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+      restart: unless-stopped
+      #restart: always
+      deploy:
+        resources:
+          limits:
+            cpus: "2"
+            memory: 3G
+
+
+  volumes:
+    jenkins_home:
+      name: "custom_jenkins_home"
+    sonarqube_conf:
+      name: "custom_sonarqube_conf"
+    sonarqube_data:
+      name: "custom_sonarqube_data"
+    sonarqube_extensions:
+      name: "custom_sonarqube_extensions"
+    sonarqube_logs:
+      name: "custom_sonarqube_logs"
+
+    # sonarqube_bundled-plugins:
+    #   name: "custom_sonarqube_bundled-plugins"
+
+  networks:
+    net_devops:
+      driver: bridge
+      name: net_devops
