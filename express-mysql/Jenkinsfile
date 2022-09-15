@@ -17,7 +17,7 @@ pipeline {
   environment {
       // General Variables for Pipeline
       PROJECT_ROOT = 'express-mysql/app'
-      REGISTRY = 'bbrenesbabel/docker-pirate'
+      REGISTRY = 'brayanbs99/docker-pirate'
   }
 
   stages {
